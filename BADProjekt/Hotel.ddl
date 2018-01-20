@@ -1,27 +1,3 @@
-IF OBJECT_ID('gosc', 'U') IS NOT NULL 
-    DROP TABLE gosc;
-
-CREATE TABLE gosc (
-    pesel            VARCHAR(11) NOT NULL CHECK (pesel LIKE '[0-9]%'),
-    imie             VARCHAR(30),
-    nazwisko         VARCHAR(30) NOT NULL,
-    data_urodzenia   DATE NOT NULL
-);
-
-ALTER TABLE gosc ADD CONSTRAINT gosc_pk PRIMARY KEY ( pesel );
-
-
-IF OBJECT_ID('pokoj', 'U') IS NOT NULL 
-    DROP TABLE pokoj;
-CREATE TABLE pokoj (
-    nr_pokoju   INTEGER NOT NULL UNIQUE CHECK (nr_pokoju > 0),
-    zajety      CHAR(1) NOT NULL DEFAULT 0,
-    standard    INTEGER
-);
-
-ALTER TABLE pokoj ADD CONSTRAINT pokoj_pk PRIMARY KEY ( nr_pokoju );
-
-
 IF OBJECT_ID('rachunek_spa', 'U') IS NOT NULL 
     DROP TABLE rachunek_spa;
 CREATE TABLE rachunek_spa (
@@ -54,6 +30,31 @@ CREATE TABLE rezerwacja (
 );
 
 ALTER TABLE rezerwacja ADD CONSTRAINT rezerwacja_pk PRIMARY KEY ( id_rezerwacji );
+
+IF OBJECT_ID('gosc', 'U') IS NOT NULL 
+    DROP TABLE gosc;
+
+CREATE TABLE gosc (
+    pesel            VARCHAR(11) NOT NULL CHECK (pesel LIKE '[0-9]%'),
+    imie             VARCHAR(30),
+    nazwisko         VARCHAR(30) NOT NULL,
+    data_urodzenia   DATE NOT NULL
+);
+
+ALTER TABLE gosc ADD CONSTRAINT gosc_pk PRIMARY KEY ( pesel );
+
+
+IF OBJECT_ID('pokoj', 'U') IS NOT NULL 
+    DROP TABLE pokoj;
+CREATE TABLE pokoj (
+    nr_pokoju   INTEGER NOT NULL UNIQUE CHECK (nr_pokoju > 0),
+    zajety      CHAR(1) NOT NULL DEFAULT 0,
+    standard    INTEGER
+);
+
+ALTER TABLE pokoj ADD CONSTRAINT pokoj_pk PRIMARY KEY ( nr_pokoju );
+
+
 
 
 IF OBJECT_ID('sezon', 'U') IS NOT NULL 
@@ -179,17 +180,5 @@ VALUES ('2018-01-20', '2018-01-25', '2018-01-28', 2, 'oczekujaca', NULL, 3, '670
 INSERT INTO rachunek_spa
 VALUES ('2018-01-26', 1, 1, 2),
 ('2018-01-27', 2, 2, 2);
-
-
-
-
-
-
-
-
-
-
-
-
 
 

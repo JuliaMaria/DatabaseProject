@@ -17,11 +17,8 @@ AS
 SELECT * FROM aktualne_rezerwacje;
 
 
-
-
 IF OBJECT_ID('nowa_rezerwacja', 'P') IS NOT NULL 
     DROP PROCEDURE nowa_rezerwacja;
-
 CREATE PROCEDURE nowa_rezerwacja @data_rezerwacji  DATE,
                            @data_przyjazdu DATE,
 						   @data_wyjazdu DATE,
@@ -98,8 +95,7 @@ AS
 EXEC nowa_rezerwacja '2018-01-20', '2018-01-25', '2018-01-30', 2, 'oczekujaca', 1, '89765467890', 2;
 EXEC nowa_rezerwacja '2018-01-20', '2018-01-22', '2018-01-29', 1, 'oczekujaca', 2, '97095645789', 3;
 	
-	
-	
+		
 IF OBJECT_ID('dodaj_goscia', 'P') IS NOT NULL 
     DROP PROCEDURE dodaj_goscia;
 CREATE PROCEDURE dodaj_goscia @pesel VARCHAR(11),
@@ -118,7 +114,6 @@ AS
 	
 EXEC dodaj_goscia '09878967856', 'Kamil', 'Malkowski', '1995-02-23';
 	
-
 	
 IF OBJECT_ID('usun_rezerwacje', 'P') IS NOT NULL 
     DROP PROCEDURE usun_rezerwacje;
@@ -133,13 +128,9 @@ AS
            ERROR_MESSAGE() AS 'KOMUNIKAT'
 	END CATCH;
 	
-
 EXEC usun_rezerwacje 1;
 	
 	
-	
-	
-
 IF OBJECT_ID('przedluz_rezerwacje', 'P') IS NOT NULL 
     DROP PROCEDURE przedluz_rezerwacje;
 CREATE PROCEDURE przedluz_rezerwacje @id_rezerwacji INT,
@@ -162,8 +153,6 @@ AS
 	END CATCH;
 	
 EXEC przedluz_rezerwacje 2, '2018-02-02';
-	
-	
 	
 
 IF OBJECT_ID('wygeneruj_rachunek', 'P') IS NOT NULL 
@@ -219,9 +208,7 @@ AS
 	END CATCH;
 	
 EXEC wygeneruj_rachunek 2;
-	
-
-	
+		
 	
 IF OBJECT_ID('liczba_zabiegow', 'FN') IS NOT NULL 
     DROP FUNCTION liczba_zabiegow;
@@ -242,11 +229,6 @@ END;
 DECLARE @zabiegi INT;
 EXEC @zabiegi = dbo.liczba_zabiegow 2;
 PRINT @zabiegi;
-
-
-
-
-
 
 
 IF OBJECT_ID('grafik_rezerwacji_pokoju', 'TF') IS NOT NULL 
@@ -273,8 +255,6 @@ END;
 SELECT * FROM dbo.grafik_rezerwacji_pokoju(2);
 
 
-
-
 IF OBJECT_ID('pokoj_niedostepny', 'T') IS NOT NULL 
     DROP TRIGGER pokoj_niedostepny;
 CREATE TRIGGER pokoj_niedostepny ON pokoj
@@ -288,11 +268,6 @@ END;
 
 DELETE FROM pokoj
 WHERE nr_pokoju = 1;
-
-
-
-
-
 
 
 IF OBJECT_ID('zmiana_ceny', 'T') IS NOT NULL 

@@ -31,9 +31,9 @@ CREATE TABLE rezerwacja (
 
 ALTER TABLE rezerwacja ADD CONSTRAINT rezerwacja_pk PRIMARY KEY ( id_rezerwacji );
 
+
 IF OBJECT_ID('gosc', 'U') IS NOT NULL 
     DROP TABLE gosc;
-
 CREATE TABLE gosc (
     pesel            VARCHAR(11) NOT NULL CHECK (pesel LIKE '[0-9]%'),
     imie             VARCHAR(30),
@@ -53,8 +53,6 @@ CREATE TABLE pokoj (
 );
 
 ALTER TABLE pokoj ADD CONSTRAINT pokoj_pk PRIMARY KEY ( nr_pokoju );
-
-
 
 
 IF OBJECT_ID('sezon', 'U') IS NOT NULL 
@@ -171,7 +169,6 @@ VALUES ('89765467890', 'Tomasz', 'Nowak', '1977-05-11'),
 ('67046785908', 'Maria', 'Kowalska', '1967-12-23'),
 ('67859045678', 'Jan', 'Wisniewski', '1956-09-13'),
 ('97095645789', 'Edyta', 'Jankowska', '1987-03-14');
-
 
 INSERT INTO rezerwacja
 VALUES ('2018-01-20', '2018-01-25', '2018-01-28', 2, 'oczekujaca', NULL, 3, '67046785908', 4, NULL),

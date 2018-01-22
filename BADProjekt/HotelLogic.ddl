@@ -44,9 +44,15 @@ AS
 					BEGIN
 					RAISERROR('Goscia nie ma w bazie', 11, 1)
 					END
+	IF (SELECT zajety
+		FROM pokoj
+		WHERE nr_pokoju = @pokoj) = 1
+		BEGIN
+		RAISERROR('Pokoj jest niedostepny', 11, 1)
+		END
 	IF EXISTS (SELECT *
 			   FROM rezerwacja
-		       WHERE pokoj = @pokoj AND ((data_przyjazdu <= @data_przyjazdu AND data_wyjazdu >= @data_przyjazdu) OR (data_przyjazdu <= @data_wyjazdu AND data_wyjazdu >= @data_wyjazdu) OR (data_przyjazdu >= @data_przyjazdu AND data_wyjazdu <= @data_wyjazdu)))
+		       WHERE pokoj = @pokoj AND ((data_przyjazdu <= @data_przyjazdu AND ISNULL(przedluzenie, data_wyjazdu) >= @data_przyjazdu) OR (data_przyjazdu <= @data_wyjazdu AND ISNULL(przedluzenie, data_wyjazdu) >= @data_wyjazdu) OR (data_przyjazdu >= @data_przyjazdu AND ISNULL(przedluzenie, data_wyjazdu) <= @data_wyjazdu)))
 			   BEGIN
 			   RAISERROR('W wybranym terminie pokoj jest zajety', 11, 1)
 			   END
@@ -74,9 +80,13 @@ AS
 		END
 
 	IF @data_rezerwacji IS NULL SET @data_rezerwacji = GETDATE()
+	DECLARE @sezon INT
+	SET @sezon = (SELECT id_sezonu
+					FROM sezon
+					WHERE @data_przyjazdu BETWEEN dat_rozpoczecia AND data_zakonczenia)
 
-	INSERT INTO rezerwacja (data_rezerwacji, data_przyjazdu, data_wyjazdu, liczba_osob, status, wyzywienie, gosc, pokoj)
-	VALUES (@data_rezerwacji, @data_przyjazdu, @data_wyjazdu, @liczba_osob, @status, @wyzywienie, @gosc, @pokoj)
+	INSERT INTO rezerwacja (data_rezerwacji, data_przyjazdu, data_wyjazdu, liczba_osob, status, wyzywienie, gosc, pokoj, sezon)
+	VALUES (@data_rezerwacji, @data_przyjazdu, @data_wyjazdu, @liczba_osob, @status, @wyzywienie, @gosc, @pokoj, @sezon)
 
 
 	END TRY

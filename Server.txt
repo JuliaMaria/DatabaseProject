@@ -11,33 +11,43 @@ public class TicTacToeClient {
         BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         int table[] = new int[25];
         String opponent;
+        String me;
         int opponentMove;
         int myMove;
         int gamesWon = 0;
-        inFromServer.readLine();
-        outToServer.writeBytes("LOGIN julia_may");
+        System.out.println(inFromServer.readLine());
+        outToServer.writeBytes("LOGIN julia_may" + '\n');
+        System.out.println(inFromServer.readLine());
         for (int i = 0; i < 200; i++) {
             Arrays.fill(table, 0);
             myMove = 0;
-            outToServer.writeBytes("MOVE " + Integer.toString(myMove));
+            me = "MOVE " + Integer.toString(myMove);
+            outToServer.writeBytes(me + '\n');
+            System.out.println(me);
             table[myMove] = 1;
             myMove++;
+            System.out.println(inFromServer.readLine());
             opponent = inFromServer.readLine();
-            while (opponent != "WIN" && opponent != "LOST") {
-                opponentMove = Integer.parseInt(opponent.split(" ")[1]);
-                table[opponentMove] = 2;
-                while (table[myMove] == 2) {
+            System.out.println(opponent);
+            while (!opponent.equals("WIN") && !opponent.equals("LOST") && myMove < 25) {
+                    opponentMove = Integer.parseInt(opponent.split(" ")[1]);
+                    table[opponentMove] = 2;
+                    while (table[myMove] == 2) {
+                        myMove++;
+                    }
+                    me = "MOVE " + Integer.toString(myMove);
+                    outToServer.writeBytes(me + '\n');
+                    System.out.println(me);
+                    table[myMove] = 1;
                     myMove++;
-                }
-                outToServer.writeBytes("MOVE " + Integer.toString(myMove));
-                table[myMove] = 1;
-                myMove++;
-                opponent = inFromServer.readLine();
+                    System.out.println(inFromServer.readLine());
+                    opponent = inFromServer.readLine();
+                    System.out.println(opponent);
             }
             if (opponent == "WIN") {
                 gamesWon++;
             }
-            inFromServer.readLine();
+            System.out.println(inFromServer.readLine());
         }
         System.out.println(inFromServer.readLine());
         System.out.println(gamesWon);
